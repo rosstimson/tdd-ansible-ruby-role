@@ -1,0 +1,52 @@
+---
+
+# RHEL-like operating systems such as Amazon Linux.
+- name: install ruby build dependencies
+  when: ansible_os_family == "RedHat"
+  package:
+    name: "{{ redhat_pkgs }}"
+
+# Debian-like operating systems such as Ubuntu.
+- name: install ruby build dependencies
+  when: ansible_os_family == "Debian"
+  package:
+    name: "{{ debian_pkgs }}"
+
+- name: download ruby source code tarball
+  get_url:
+    url: http://cache.ruby-lang.org/pub/ruby/{{ ruby_minor_version }}/ruby-{{ ruby_minor_version }}.{{ ruby_teenie_version }}.tar.gz
+    dest: /tmp/ruby-{{ ruby_minor_version }}.{{ruby_teenie_version }}.tar.gz
+    sha256sum: "{{ ruby_sha256sum }}"
+
+- name: extract ruby source code tarball
+  unarchive:
+    src: /tmp/ruby-{{ ruby_minor_version }}.{{ ruby_teenie_version }}.tar.gz
+    dest: /tmp
+    copy: no
+
+- name: compile and install ruby
+  command: "{{ item }}"
+  with_items:
+    - ./configure --prefix={{ ruby_prefix }}
+    - make
+    - make install
+  args:
+    chdir: /tmp/ruby-{{ ruby_minor_version }}.{{ ruby_teenie_version }}
+    creates: "{{ ruby_prefix }}/bin/ruby"
+
+# Override the "changed" result, we are not changing anything here, just
+# calling the ruby executable so we can check its version.
+#
+# Skip ansible-lint here as it will flag this as unecessary with the following:
+# [ANSIBLE0012] Commands should not change things if nothing needs doing
+- name: test ruby version
+  command: "{{ ruby_prefix }}/bin/ruby -v"
+  register: test_ruby_version
+  changed_when: False
+  tags:
+    - skip_ansible_lint
+
+- name: assert ruby version
+  assert:
+    that:
+      - "'ruby {{ ruby_minor_version }}.{{ ruby_teenie_version }}' in test_ruby_version.stdout"

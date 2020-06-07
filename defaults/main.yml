@@ -1,0 +1,6 @@
+---
+
+ruby_minor_version: 2.7
+ruby_teenie_version: 1
+ruby_sha256sum: d418483bdd0000576c1370571121a6eb24582116db0b7bb2005e90e250eae418
+ruby_prefix: /usr/local

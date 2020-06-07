@@ -1,0 +1,31 @@
+---
+
+redhat_pkgs:
+  - automake
+  - bison
+  - gcc
+  - gdbm-devel
+  - gzip
+  - libffi-devel
+  - libyaml-devel
+  - make
+  - ncurses-devel
+  - openssl-devel
+  - readline-devel
+  - tar
+  - zlib-devel
+
+debian_pkgs:
+  - automake
+  - bison
+  - build-essential
+  - gzip
+  - libffi-dev
+  - libgdbm-dev
+  - libncurses-dev
+  - libreadline-dev
+  - libssl-dev
+  - libyaml-dev
+  - make
+  - tar
+  - zlib1g-dev

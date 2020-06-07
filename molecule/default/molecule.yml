@@ -1,0 +1,14 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: amazonlinux
+    image: amazonlinux
+  - name: ubuntu
+    image: ubuntu
+provisioner:
+  name: ansible
+verifier:
+  name: testinfra

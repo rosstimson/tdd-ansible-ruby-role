@@ -1,0 +1,14 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+molecule = {extras = ["lint"],version = "*"}
+testinfra = "*"
+docker = "*"
+
+[packages]
+
+[requires]
+python_version = "3.8"
